@@ -42,31 +42,3 @@ class poly2d :
 
 
 
-indat= np.fromfile('/Users/hg/data/process_hyti/scan_1000_sub', dtype=np.uint16).reshape(2000,512,320)
-frame0 = indat[0,:,:]
-frame1 = indat[15,:,:]
-frame0_sub = frame0[300:364,140:204]
-frame1_sub = frame1[300:364,140:204]
-#plt.imshow(frame0,cmap='gray')
-poly =poly2d(64,64)
-poly.fit(frame0_sub)
-f0 = frame0_sub - poly.zfit
-poly.fit(frame1_sub)
-f1 = frame1_sub - poly.zfit
-
-
-f = plt.figure()
-f.add_subplot(1,2,1)
-plt.imshow (f0)
-f.add_subplot(1,2,2)
-
-fft0 = np.fft.fft2(f0)
-fft0c = np.conj(fft0)
-fft1 = np.fft.fft2(f1)
-fcross = fft0c * fft1
-ifcross = np.fft.ifft2(fcross)
-maxloc = np.argmax(np.abs(ifcross))
-
-print (maxloc/64.)
-plt.imshow(f1)
-plt.show()
